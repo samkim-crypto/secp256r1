@@ -1,0 +1,10 @@
+[workspace]
+members = ["secp256r1-verify"]
+resolver = "2"
+
+[workspace.lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = [
+    'cfg(target_os, values("solana"))',
+    'cfg(target_arch, values("bpf"))',
+    'cfg(feature, values("custom-panic"))',
+] }
