@@ -6,5 +6,21 @@ edition = "2021"
 [lib]
 crate-type = ["rlib"]
 
+[features]
+default = ["verify", "instruction"]
+# Enables the client-side constructor for invoking the standalone program.
+instruction = ["dep:solana-instruction", "dep:solana-address"]
+# Enables the in-program secp256r1 signature verifier (`Secp256r1Verifier`)
+# and the hash syscall it depends on.
+verify = ["dep:solana-sha256-hasher"]
+
+[dependencies]
+solana-address = { workspace = true, optional = true }
+solana-instruction = { workspace = true, optional = true }
+solana-sha256-hasher = { workspace = true, optional = true }
+
+[dev-dependencies]
+solana-sha256-hasher = { workspace = true, features = ["sha2"] }
+
 [lints]
 workspace = true

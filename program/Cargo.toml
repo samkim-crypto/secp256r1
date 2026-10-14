@@ -1,0 +1,30 @@
+[package]
+name = "solana-secp256r1-program"
+version = "4.0.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[features]
+default = []
+
+[dependencies]
+pinocchio = { workspace = true }
+solana-secp256r1-verify = { workspace = true, default-features = false, features = [
+    "verify",
+] }
+
+[dev-dependencies]
+mollusk-svm = { workspace = true }
+p256 = { workspace = true }
+solana-account = { workspace = true }
+solana-address = { workspace = true }
+solana-instruction = { workspace = true }
+solana-secp256r1-verify = { workspace = true, default-features = false, features = [
+    "verify",
+    "instruction",
+] }
+
+[lints]
+workspace = true
