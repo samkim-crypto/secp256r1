@@ -12,13 +12,40 @@ is being removed.
 
 To support protocols that rely on secp256r1 (NIST P-256) ECDSA signature
 verification, such as WebAuthn and passkeys, this repository provides an SBF
-alternative. It starts with `solana-secp256r1-verify`, a stateless,
-zero-allocation library for in-program verification. A standalone SBF program
-built on it will follow.
+alternative. It is split into two components:
+
+1. **`solana-secp256r1-verify`**: a stateless, zero-allocation library for
+   in-program verification.
+2. **`solana-secp256r1-program`**: a standalone SBF program that verifies a
+   signature on-chain.
+
+## Instruction format
+
+The program verifies a single signature and expects no accounts. Instruction
+data is:
+
+```text
+[0 .. 33]     compressed public key (33 bytes: 0x02 or 0x03, then X)
+[33 .. 97]    signature r || s (64 bytes)
+[97 ..]       message
+```
+
+The message is hashed with SHA-256, and signatures with `s > N/2` are rejected,
+the same as the native precompile. Any verification failure is returned as
+`ProgramError::InvalidInstructionData`.
+
+The `verify` helper in `solana-secp256r1-verify` builds this layout:
+
+```rust
+use solana_secp256r1_verify::{verify, ID};
+
+let instruction = verify(&ID, &public_key, &signature, message);
+```
 
 ## Library usage
 
-Programs verify signatures with `Secp256r1Verifier`:
+Programs can skip the CPI and verify signatures directly with
+`Secp256r1Verifier`:
 
 ```rust
 use solana_secp256r1_verify::Secp256r1Verifier;
@@ -49,13 +76,23 @@ signatures. Two options change that:
 
 ## Build and test
 
-Stable Rust `1.93.1` is pinned in `rust-toolchain.toml`. Some make targets also
-require the nightly Rust toolchain `nightly-2026-01-22`.
+Stable Rust `1.98.1` is pinned in `rust-toolchain.toml`. Some make targets also
+require the nightly Rust toolchain `nightly-2026-07-16`.
 
 ```sh
 # Library unit tests (host, no SBF toolchain required)
 cargo test --manifest-path secp256r1-verify/Cargo.toml
 
-# SBF build of the library
-make build-sbf-secp256r1-verify
+# SBF build via Makefile
+make build-sbf-program
+
+# Host unit tests, then SBF integration tests via solana-program-test
+make test-program
+
+# Print compute-unit measurements for the SBF program
+make cu-program
 ```
+
+The integration tests execute `target/deploy/solana_secp256r1_program.so`. They
+skip unless `SBF_OUT_DIR` is set. The tests that need the elliptic-curve check
+are marked `#[ignore]` until it is implemented.

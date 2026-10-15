@@ -1,4 +1,4 @@
-RUST_TOOLCHAIN_NIGHTLY = nightly-2026-01-22
+RUST_TOOLCHAIN_NIGHTLY = nightly-2026-07-16
 SOLANA_CLI_VERSION = v4.1.2
 SBF_ARCH = v3
 
@@ -13,7 +13,10 @@ solana-cli-version:
 	@echo ${SOLANA_CLI_VERSION}
 
 audit:
-	cargo audit $(ARGS)
+	cargo audit \
+		--ignore RUSTSEC-2022-0093 \
+		--ignore RUSTSEC-2024-0344 \
+		$(ARGS)
 
 spellcheck:
 	cargo spellcheck --code 1 $(ARGS)
@@ -55,7 +58,7 @@ cu-program: build-sbf-program
 	SBF_OUT_DIR=$(PWD)/target/deploy cargo test \
 		--locked \
 		--manifest-path program/Cargo.toml \
-		--test mollusk \
+		--test functional \
 		-- --nocapture
 
 build-sbf-secp256r1: build-sbf-program

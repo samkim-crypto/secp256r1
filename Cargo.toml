@@ -1,5 +1,5 @@
 [workspace]
-members = ["secp256r1-verify"]
+members = ["program", "secp256r1-verify"]
 resolver = "2"
 
 [workspace.lints.rust]
@@ -10,6 +10,12 @@ unexpected_cfgs = { level = "warn", check-cfg = [
 ] }
 
 [workspace.dependencies]
+p256 = "0.13.2"
+pinocchio = "0.11.2"
 solana-address = "2.7.0"
 solana-instruction = "3.3.0"
+solana-program-test = { version = "=4.5.0-alpha.2", features = ["agave-unstable-api"] }
+solana-secp256r1-verify = { path = "secp256r1-verify", version = "0.1.0", default-features = false }
 solana-sha256-hasher = "3.1.0"
+solana-signer = "4.0.0"
+solana-transaction = { version = "5.1.0", features = ["wincode"] }
