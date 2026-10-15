@@ -6,5 +6,18 @@ edition = "2021"
 [lib]
 crate-type = ["rlib"]
 
+[features]
+default = ["verify", "instruction"]
+instruction = ["dep:solana-instruction", "dep:solana-address"]
+verify = ["dep:solana-sha256-hasher"]
+
+[dependencies]
+solana-address = { workspace = true, optional = true }
+solana-instruction = { workspace = true, optional = true }
+solana-sha256-hasher = { workspace = true, optional = true }
+
+[dev-dependencies]
+solana-sha256-hasher = { workspace = true, features = ["sha2"] }
+
 [lints]
 workspace = true

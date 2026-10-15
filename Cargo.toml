@@ -8,3 +8,8 @@ unexpected_cfgs = { level = "warn", check-cfg = [
     'cfg(target_arch, values("bpf"))',
     'cfg(feature, values("custom-panic"))',
 ] }
+
+[workspace.dependencies]
+solana-address = "2.7.0"
+solana-instruction = "3.3.0"
+solana-sha256-hasher = "3.1.0"
