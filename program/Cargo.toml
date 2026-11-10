@@ -1,0 +1,29 @@
+[package]
+name = "solana-secp256r1-program"
+version = "4.0.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[features]
+default = []
+
+[dependencies]
+pinocchio = { workspace = true }
+solana-secp256r1-verify = { workspace = true, default-features = false, features = [
+    "verify",
+] }
+
+[dev-dependencies]
+p256 = { workspace = true }
+solana-program-test = { workspace = true }
+solana-secp256r1-verify = { workspace = true, default-features = false, features = [
+    "verify",
+    "instruction",
+] }
+solana-signer = { workspace = true }
+solana-transaction = { workspace = true }
+
+[lints]
+workspace = true

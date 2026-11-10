@@ -1,4 +1,4 @@
-RUST_TOOLCHAIN_NIGHTLY = nightly-2026-01-22
+RUST_TOOLCHAIN_NIGHTLY = nightly-2026-08-16
 SOLANA_CLI_VERSION = v4.1.2
 SBF_ARCH = v3
 
@@ -55,7 +55,7 @@ cu-program: build-sbf-program
 	SBF_OUT_DIR=$(PWD)/target/deploy cargo test \
 		--locked \
 		--manifest-path program/Cargo.toml \
-		--test mollusk \
+		--test functional \
 		-- --nocapture
 
 build-sbf-secp256r1: build-sbf-program

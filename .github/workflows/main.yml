@@ -7,8 +7,8 @@ on:
     branches: [main]
 
 env:
-  SBPF_PROGRAM_PACKAGES: "['secp256r1-verify']"
-  RUST_PACKAGES: "['secp256r1-verify']"
+  SBPF_PROGRAM_PACKAGES: "['program', 'secp256r1-verify']"
+  RUST_PACKAGES: "['program', 'secp256r1-verify']"
 
 jobs:
   set_env:
