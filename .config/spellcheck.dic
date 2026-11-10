@@ -1,5 +1,15 @@
-4
+14
+authenticators
+cryptographic
 ECDSA
+encodings
+multiscalar
 NIST
+precompile
+SBF
 secp256r1
 Solana
+syscall
+syscalls
+verifier
+WebAuthn
